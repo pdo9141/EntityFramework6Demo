@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{46ABB818-C0C5-47C8-A1C8-697A4D0CD5ED}</ProjectGuid>
+    <ProjectGuid>{D2B24B9D-527E-4B50-A5AB-895E931A0778}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NinjaDomain.DataModel</RootNamespace>
-    <AssemblyName>NinjaDomain.DataModel</AssemblyName>
+    <RootNamespace>EDMXFromDB</RootNamespace>
+    <AssemblyName>EDMXFromDB</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,35 +51,59 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201609080417217_Initial.cs" />
-    <Compile Include="Migrations\201609080417217_Initial.Designer.cs">
-      <DependentUpon>201609080417217_Initial.cs</DependentUpon>
+    <Compile Include="AWModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AWModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609090437097_AddBirthdayToNinja.cs" />
-    <Compile Include="Migrations\201609090437097_AddBirthdayToNinja.Designer.cs">
-      <DependentUpon>201609090437097_AddBirthdayToNinja.cs</DependentUpon>
+    <Compile Include="AWModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AWModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="NinjaContext.cs" />
+    <Compile Include="AWModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AWModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Borrower.cs">
+      <DependentUpon>AWModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Order.cs">
+      <DependentUpon>AWModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderDetail.cs">
+      <DependentUpon>AWModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <EntityDeploy Include="AWModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AWModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="AWModel.edmx.diagram">
+      <DependentUpon>AWModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NinjaDomain.Classes\NinjaDomain.Classes.csproj">
-      <Project>{11C92941-8C41-4F77-B68E-1D610CD1F742}</Project>
-      <Name>NinjaDomain.Classes</Name>
-    </ProjectReference>
+    <Content Include="AWModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AWModel.edmx</DependentUpon>
+      <LastGenOutput>AWModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="AWModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AWModel.edmx</DependentUpon>
+      <LastGenOutput>AWModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609080417217_Initial.resx">
-      <DependentUpon>201609080417217_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609090437097_AddBirthdayToNinja.resx">
-      <DependentUpon>201609090437097_AddBirthdayToNinja.cs</DependentUpon>
-    </EmbeddedResource>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

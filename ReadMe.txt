@@ -24,3 +24,18 @@ http://thedatafarm.com/data-access/installing-ef-power-tools-into-vs2015/
 	b) Go to PMC and type "update-database" (runs against DB) 
 	   or "update-database -verbose" (runs against DB and prints what's happening behind the scenes)
 	   or "update-database -script" (generates scripts), this will look for latest migrations file
+
+08) Here is an example of modifying your model to add a birthdate
+	a) Modify your model by adding birthdate
+	b) Go To PMC and type "add-migration [migration name]" command, e.g., "add-migration AddBirthdate"
+	c) Go To PMC and type "update-database" command, use any of the flags desired
+
+09) Here are the steps to create your models DB first with EDMX
+	a) Create a new class library project
+	b) Add ADO.NET Entity Data Model to your project
+	c) Select EF Designer from database option and follow steps
+
+10) Here are the steps to create your models DB first
+	a) Create a new class library project
+	b) Add ADO.NET Entity Data Model to your project
+	c) Select Code First from database option and follow steps
