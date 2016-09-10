@@ -6,6 +6,11 @@ namespace NinjaDomain.Classes
 {
     public class Ninja
     {
+        public Ninja()
+        {
+            EquipmentOwned = new List<NinjaEquipment>();
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -17,12 +22,18 @@ namespace NinjaDomain.Classes
         public int ClanId { get; set; }
 
         public List<NinjaEquipment> EquipmentOwned { get; set; }
+        //public virtual List<NinjaEquipment> EquipmentOwned { get; set; }
 
         public DateTime DateOfBirth { get; set; }
     }
     
     public class Clan
     {
+        public Clan()
+        {
+            Ninjas = new List<Ninja>();
+        }
+
         public int Id { get; set; }
 
         public string ClanName { get; set; }
