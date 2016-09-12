@@ -39,3 +39,5 @@ http://thedatafarm.com/data-access/installing-ef-power-tools-into-vs2015/
 	a) Create a new class library project
 	b) Add ADO.NET Entity Data Model to your project
 	c) Select Code First from database option and follow steps
+
+11) For performance reasons, in disconnect apps like mvc, use the asnotracking method to save ef from tracking entities
