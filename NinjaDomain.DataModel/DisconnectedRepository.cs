@@ -3,14 +3,13 @@ using System.Linq;
 using System.Data.Entity;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using NinjaDomain.Classes;
 
 namespace NinjaDomain.DataModel
 {
     public class DisconnectedRepository
     {
-        public List<Ninja> GetNinjasWithClan(int id)
+        public List<Ninja> GetNinjasWithClan()
         {
             using (var context = new NinjaContext())
             {
@@ -37,71 +36,83 @@ namespace NinjaDomain.DataModel
                     .FirstOrDefault(n => n.Id == id);
             }
         }
-        /*
-        public Ninja GetNinjaById(int id)
-        {
-            return _context.Ninjas.Find(id);
-        }
-
-        public List<Ninja> GetNinjas()
-        {
-            return _context.Ninjas.ToList();
-        }
 
         public IEnumerable GetClanList()
         {
-            return _context.Clans.OrderBy(c => c.ClanName).Select(c => new { c.Id, c.ClanName }).ToList();
-        }
-
-        public ObservableCollection<Ninja> NinjasInMemory()
-        {
-            if (_context.Ninjas.Local.Count == 0)
+            using (var context = new NinjaContext())
             {
-                GetNinjas();
-            }
-
-            return _context.Ninjas.Local;
-        }
-
-        public void Save()
-        {
-            RemoveEmptyNewNinjas();
-            _context.SaveChanges();
-        }
-
-        private Ninja NewNinja()
-        {
-            var ninja = new Ninja();
-            _context.Ninjas.Add(ninja);
-            return ninja;
-        }
-
-        private void RemoveEmptyNewNinjas()
-        {
-            // YOU CAN'T REMOVE FROM OR ADD TO A COLLECTION IN A FOREACH LOOP
-            for (var i = _context.Ninjas.Local.Count; i > 0; i--)
-            {
-                var ninja = _context.Ninjas.Local[i - 1];
-                if (_context.Entry(ninja).State == EntityState.Added && !ninja.IsDirty)
-                {
-                    _context.Ninjas.Remove(ninja);
-                }
+                return context.Clans.AsNoTracking().OrderBy(c => c.ClanName)
+                    .Select(c => new { c.Id, c.ClanName }).ToList();
             }
         }
 
-        public void DeleteCurrentNinja(Ninja ninja)
+        public Ninja GetNinjaById(int id)
         {
-            _context.Ninjas.Remove(ninja);
-            Save();
-        }
-
-        public void DeleteEquipment(ICollection equipmentList)
-        {
-            foreach (NinjaEquipment equip in equipmentList)
+            using (var context = new NinjaContext())
             {
-                _context.Equipment.Remove(equip);
+                //return context.Ninjas.Find(id);
+                return context.Ninjas.AsNoTracking().SingleOrDefault(n => n.Id == id);
             }
         }
-        */
+
+        public void SaveUpdatedNinja(Ninja ninja)
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Entry(ninja).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
+        public void SaveNewNinja(Ninja ninja)
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Ninjas.Add(ninja);
+                context.SaveChanges();
+            }
+        }
+
+        public object GetEquipmentById(int value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteNinja(int ninjaId)
+        {
+            using (var context = new NinjaContext())
+            {
+                var ninja = context.Ninjas.Find(ninjaId);
+                context.Entry(ninja).State = EntityState.Deleted;
+                context.SaveChanges();
+            }
+        }
+
+        public void SaveNewEquipment(NinjaEquipment equipment, int ninjaId)
+        {
+            // PAYING THE PRICE OF NOT HAVING A FOREIGN KEY HERE.
+            // REASON #857 WHY I PREFER FOREIGN KEYS!
+            using (var context = new NinjaContext())
+            {
+                var ninja = context.Ninjas.Find(ninjaId);
+                ninja.EquipmentOwned.Add(equipment);
+                context.SaveChanges();
+            }
+        }
+
+        public void SaveUpdatedEquipment(NinjaEquipment equipment, int ninjaId)
+        {
+            // PAYING THE PRICE OF NOT HAVING A FOREIGN KEY HERE.
+            // REASON #858 WHY I PREFER FOREIGN KEYS!
+            using (var context = new NinjaContext())
+            {
+                var equipmentWithNinjaFromDatabase =
+                    context.Equipment.Include(n => n.Ninja).FirstOrDefault(e => e.Id == equipment.Id);
+
+                context.Entry(equipmentWithNinjaFromDatabase).CurrentValues.SetValues(equipment);
+
+                context.SaveChanges();
+            }
+        }
     }
 }
