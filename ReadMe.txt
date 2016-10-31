@@ -43,3 +43,6 @@ http://thedatafarm.com/data-access/installing-ef-power-tools-into-vs2015/
 11) For performance reasons, in disconnect apps like mvc, use the asnotracking method to save ef from tracking entities
 
 12) To use DB scripts to deploy, use the command Update-Database -Script -SourceMigration: $InitialDatabase 
+	This will roll all the way back to an empty database, creates SQL script starting from initial database
+	Or you can use Update-Database -Script -SourceMigration: $InitialDatabase -TargetMigration: AddPostAbstract to specify source and target
+	This will create a SQL script starting from source migration snapshot to target migration
