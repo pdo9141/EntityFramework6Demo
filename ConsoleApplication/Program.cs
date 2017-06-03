@@ -312,6 +312,66 @@ namespace ConsoleApplication
                 context.Database.Log = Console.WriteLine;
                 context.Database.ExecuteSqlCommand("EXEC DeleteNinjaViaId {0}", keyval);
             }
+
+            /*
+            using (var context = new ServicesDBContext())
+            {
+                var entity = new SigningProviderInfoRequestEntity
+                {
+                    TaskId = Guid.NewGuid()
+                };
+                db.SigningProviderInfoRequestEntities.AddObject(entity);
+                db.SaveChanges();
+
+                var param1 = new SqlParameter("@SigningProviderInfoRequestId", entity.Id);
+                var param2 = new SqlParameter("@ClientId", 91);
+
+                db.ExecuteStoreCommand("SP_name @SigningProviderInfoRequestId, @ClientId", param1, param2)
+
+                var param3 = new SqlParameter("@EntityTypeId", 1);
+                var param4 = new SqlParameter("@EntityId", 2);
+
+                var results = db
+                    .ExecuteStoreQuery<AuditAccessData>("AuditAccessData_Sel @EntityTypeId, @EntityId", param3, param4)
+                    .ToList();
+
+                results = db
+                    .ExecuteStoreQuery<AuditAccessData>("AuditAccessData_Sel @EntityTypeId, @EntityId", param3, param4)
+                    .Select(r => new { Id = r.Id, UserName = r.UserName })
+                    .ToList();
+            }
+            */
+        }
+
+        private static void JoinSamples()
+        {
+            /*
+            using (var db = new OrderDBContext())
+            {
+                var query = (from a in db.Addresses
+                             from s in db.States
+                             from c in db.Counties
+                             where a.City == "Irvine" && a.State == s.Abbr
+                             && c.Name == a.County && c.StateFips == s.StateFips
+                             select new
+                             {
+                                 AddressId = a.AddressId,
+                                 State = s.Name,
+                                 County = c.Name
+                             }).Take(9);
+
+                query = (from a in db.Addresses
+                         join s in db.States on a.State equals s.Abbr
+                         join c in db.Counties on new { County = a.County, StateFips = s.StateFips } equals new { County = c.Name, StateFips = c.StateFips }
+                         where a.City.Equals("Irvine")
+                         select new
+                         {
+                             AddressId = a.AddressId,
+                             State = s.Name,
+                             County = c.Name
+                         }).Take(9);
+            }
+            */
         }
     }
 }
