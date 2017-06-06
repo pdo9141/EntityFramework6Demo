@@ -373,5 +373,32 @@ namespace ConsoleApplication
             }
             */
         }
+
+        private static void GroupBySamples()
+        {
+            /*
+            SELECT name, count(name) FROM people GROUP by name
+
+            var query = from p in context.People
+                        group p by p.name into g
+                        select new
+                        {
+                            name = g.Key,
+                            count = g.Count()
+                        };
+
+            var query = context.People
+                   .GroupBy(p => p.name)
+                   .Select(g => new { name = g.Key, count = g.Count() });
+            */
+
+            /*
+            var resultDict = _dbContext.Projects
+            .Where(p => p.Status == ProjectStatus.Active)
+            .GroupBy(f => f.Country)
+            .Select(g => new { country = g.Key, count = g.Count() })
+            .ToDictionary(k => k.country, i => i.count);
+            */
+        }
     }
 }
